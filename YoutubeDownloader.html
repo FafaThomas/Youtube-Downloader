@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-2xl bg-[#2a2a4a] rounded-xl shadow-lg p-6 md:p-10 flex flex-col items-center">
+        <div class="flex items-center justify-center mb-6 md:mb-8">
+            <svg class="w-12 h-12 text-[#ff4d4d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 10.5l-4.5 4.5m0 0l-4.5-4.5m4.5 4.5V3m2.25 18H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10a2.25 2.25 0 012.25 2.25v.75m-4.5 9a2.25 2.25 0 002.25 2.25h12.25A2.25 2.25 0 0021 18.75V9.75A2.25 2.25 0 0018.75 7.5h-5.25a2.25 2.25 0 00-2.25 2.25v9"></path>
+            </svg>
+            <h1 class="text-3xl md:text-4xl font-bold text-white ml-4">Video Downloader</h1>
+        </div>
+
+        <p class="text-sm md:text-base text-gray-300 text-center mb-6">
+            Paste a YouTube video URL below and click "Download".
+        </p>
+
+        <div class="w-full flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
+            <input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..." class="flex-1 p-3 rounded-lg bg-[#3a3a5a] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ff4d4d]" required>
+            <button id="downloadBtn" class="bg-[#ff4d4d] text-white p-3 rounded-lg font-medium hover:bg-red-500 transition-colors focus:outline-none focus:ring-2 focus:ring-[#ff4d4d]">
+                Download
+            </button>
+        </div>
+        
+        <div id="statusContainer" class="w-full">
+            <!-- Status and download link will appear here -->
+        </div>
+
+        <div id="messageBox" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#4a4a6a] text-white p-6 rounded-lg shadow-lg z-50">
+            <p id="messageText" class="text-lg font-medium"></p>
+            <button id="closeMessageBtn" class="mt-4 bg-gray-600 px-4 py-2 rounded-lg hover:bg-gray-500 transition-colors">
+                Close
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Utility function to show a custom message box instead of alert()
+        function showMessageBox(message) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            messageText.textContent = message;
+            messageBox.classList.remove('hidden');
+        }
+
+        // Close the custom message box
+        document.getElementById('closeMessageBtn').addEventListener('click', () => {
+            document.getElementById('messageBox').classList.add('hidden');
+        });
+
+        document.getElementById('downloadBtn').addEventListener('click', async () => {
+            const videoUrl = document.getElementById('videoUrl').value;
+            const statusContainer = document.getElementById('statusContainer');
+
+            // Simple URL validation
+            if (!videoUrl || !videoUrl.includes('youtube.com/watch?v=')) {
+                showMessageBox('Please enter a valid YouTube video URL.');
+                return;
+            }
+
+            // Display a loading/processing status
+            statusContainer.innerHTML = `
+                <div class="flex items-center space-x-2 text-gray-400">
+                    <svg class="animate-spin h-5 w-5 text-[#ff4d4d]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Preparing your download... This might take a moment.</span>
+                </div>
+            `;
+
+            // This is where the magic (backend communication) would happen.
+            // In a real application, you would make an API call to your backend server.
+            // For this example, we'll simulate the process.
+            try {
+                // await a fake API call that waits for a few seconds
+                await new Promise(resolve => setTimeout(resolve, 3000));
+
+                // --- THE FOLLOWING CODE IS A MOCK-UP FOR DEMONSTRATION PURPOSES ---
+                // The actual URL would come from your backend server.
+                const mockDownloadUrl = 'https://example.com/mock-video-download.mp4';
+                const videoTitle = 'Sample Video Title';
+
+                // Display the download link and a success message
+                statusContainer.innerHTML = `
+                    <div class="w-full bg-[#3a3a5a] p-4 rounded-lg flex flex-col md:flex-row items-center justify-between mt-4">
+                        <p class="text-green-400 font-medium text-center md:text-left mb-2 md:mb-0">
+                            Download ready!
+                        </p>
+                        <a href="${mockDownloadUrl}" download class="bg-[#ff4d4d] text-white p-2 rounded-lg font-medium hover:bg-red-500 transition-colors">
+                            Download Now
+                        </a>
+                    </div>
+                `;
+
+            } catch (error) {
+                // In a real app, you would handle API call errors here
+                statusContainer.innerHTML = `
+                    <p class="text-red-400 font-medium text-center mt-4">
+                        An error occurred. Please try again.
+                    </p>
+                `;
+                console.error('Download simulation failed:', error);
+            }
+        });
+
+        // Add a simple paste listener for convenience
+        document.getElementById('videoUrl').addEventListener('paste', (event) => {
+            const pasteData = event.clipboardData.getData('text');
+            if (pasteData.includes('youtube.com/watch?v=') || pasteData.includes('youtu.be/')) {
+                document.getElementById('downloadBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>
