@@ -1,4 +1,4 @@
-# downloader.py
+# YTDownloader.py
 
 import sys
 import yt_dlp
@@ -23,8 +23,8 @@ def download_video(url):
             'outtmpl': '%(title)s.%(ext)s',
             # Merging video and audio into a single MP4 file.
             'merge_output_format': 'mp4',
-            # Add this line to handle age-restricted videos
-            'cookiesfrombrowser': 'chrome', # or 'firefox', 'edge', etc.
+            # Use the cookies file you manually exported.
+            'cookiefile': 'cookies.txt',
             'progress_hooks': [show_progress] # Add a progress hook
         }
 
@@ -34,7 +34,6 @@ def download_video(url):
             info_dict = ydl.extract_info(url, download=False)
             if 'entries' in info_dict:
                 # This is a playlist, so we'll just download the first video for simplicity.
-                # A more advanced script could loop through the playlist.
                 show_message("Playlist detected. Downloading the first video only.")
                 url = info_dict['entries'][0]['webpage_url']
 
@@ -65,7 +64,7 @@ def show_progress(d):
 if __name__ == "__main__":
     # Check if a URL was provided as a command-line argument
     if len(sys.argv) < 2:
-        show_message("Usage: python downloader.py \"<YouTube_URL>\"")
+        show_message("Usage: python YTDownloader.py \"<YouTube_URL>\"")
         show_message("Please provide a video URL.")
         sys.exit(1)
     
