@@ -23,6 +23,8 @@ def download_video(url):
             'outtmpl': '%(title)s.%(ext)s',
             # Merging video and audio into a single MP4 file.
             'merge_output_format': 'mp4',
+            # Add this line to handle age-restricted videos
+            'cookiesfrombrowser': 'chrome', # or 'firefox', 'edge', etc.
             'progress_hooks': [show_progress] # Add a progress hook
         }
 
